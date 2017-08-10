@@ -28,10 +28,11 @@ public class SignUpFragment extends Fragment {
     //Explcit
     private ImageView backImageView, saveImageView,
             uploadImageView, pictureImageView;
-    private EditText nameEditText, userEditText , passwordEditText;
+    private EditText nameEditText, userEditText, passwordEditText;
     private String nameString, userString, passwordString, pathPictureString;
     private String tag = "10AugV1";
     private Uri uri;
+    private boolean aBoolean = true;
 
     @Nullable
     @Override
@@ -68,7 +69,7 @@ public class SignUpFragment extends Fragment {
 
         if (resultCode == getActivity().RESULT_OK) {
             Log.d(tag, "RESULT_OK");
-
+            aBoolean = false;
             uri = data.getData();
 
             //Show Image
@@ -142,9 +143,14 @@ public class SignUpFragment extends Fragment {
                     myAlert.myDialog(getString(R.string.title_have_space),
                             getString(R.string.message_have_space));
 
+                } else if (aBoolean) {
+                    //Non Choose Picture
+                    MyAlert myAlert = new MyAlert(getActivity());
+                    myAlert.myDialog(getString(R.string.title_non_choose),
+                            getString(R.string.message_non_choose));
                 } else {
-                    //No Space
-                    Log.d(tag, "No Space");
+                    //No Space and Choosed Picture
+                    Log.d(tag, "No Space and Choosed Picture");
 
                 }   // if
 

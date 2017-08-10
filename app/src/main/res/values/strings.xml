@@ -4,5 +4,7 @@
     <string name="password">Password :</string>
     <string name="title_have_space">Have Space</string>
     <string name="message_have_space">Please Fill All Every Blank</string>
+    <string name="title_non_choose">Non Choose Picture</string>
+    <string name="message_non_choose">Please Click Image and Choose Picture</string>
 
 </resources>
