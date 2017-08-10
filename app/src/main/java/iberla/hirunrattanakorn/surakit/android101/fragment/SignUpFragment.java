@@ -1,10 +1,12 @@
 package iberla.hirunrattanakorn.surakit.android101.fragment;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -27,7 +29,7 @@ public class SignUpFragment extends Fragment {
     private ImageView backImageView, saveImageView,
             uploadImageView, pictureImageView;
     private EditText nameEditText, userEditText , passwordEditText;
-    private String nameString, userString, passwordString;
+    private String nameString, userString, passwordString, pathPictureString;
     private String tag = "10AugV1";
     private Uri uri;
 
@@ -70,20 +72,41 @@ public class SignUpFragment extends Fragment {
             uri = data.getData();
 
             //Show Image
-            try {
+            showImage();
 
-                Bitmap bitmap = BitmapFactory.decodeStream(getActivity()
-                        .getContentResolver().openInputStream(uri));
-                pictureImageView.setImageBitmap(bitmap);
+            //Find Path and Name of Picture
 
-            } catch (Exception e) {
-                Log.d(tag, "e ShowImage ==> " + e.toString());
+            String[] strings = new String[]{MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver()
+                    .query(uri, strings, null, null, null);
+
+            if (cursor != null) {
+
+                cursor.moveToFirst();
+                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                pathPictureString = cursor.getString(index);
+
+            } else {
+                pathPictureString = uri.getPath();
             }
 
+            Log.d(tag, "pathPicture ==> " + pathPictureString);
 
         }   // if
 
     }   // onActivityResult
+
+    private void showImage() {
+        try {
+
+            Bitmap bitmap = BitmapFactory.decodeStream(getActivity()
+                    .getContentResolver().openInputStream(uri));
+            pictureImageView.setImageBitmap(bitmap);
+
+        } catch (Exception e) {
+            Log.d(tag, "e ShowImage ==> " + e.toString());
+        }
+    }
 
     private void pictureController() {
         pictureImageView = getView().findViewById(R.id.imvPicture);
